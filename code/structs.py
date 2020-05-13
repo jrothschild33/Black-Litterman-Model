@@ -13,9 +13,9 @@ BACK_TEST_T = 200
 VIEW_T = 10
 TAU = 0.3
 
-VIEW_TYPE = 0
+VIEW_TYPE = 3
 VIEW_TYPE_NAME = ['Market value as view', "Arbitrary views", "Reasonable views", "Near period return as view"]
-START_INDEX = 275 # year 2015
-END_INDEX = 327
+START_INDEX = 273 # year 2015
+END_INDEX = 324
 
 INDEX_NUMBER = 0

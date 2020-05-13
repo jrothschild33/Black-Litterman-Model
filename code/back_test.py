@@ -18,13 +18,13 @@ class back_test():
         ret_port_set = []
         weight_port_set = []
             
-        for i in range(end_index - start_index - 2):
+        for i in range(end_index - start_index):
             cur_idx = start_index + i
             weight_bl, real_ret = bl.get_post_weight(cur_idx)
             ret_port = np.dot(weight_bl, real_ret.T)
             ret_port_set.append(ret_port)
             weight_port_set.append(weight_bl)
-        
+        # 计算收益率的累加列表（这里的收益率是log计算的，所以加和就代表累计收益率）
         acc_ret_port_set = self.get_accumulate_return(ret_port_set)
         eq_acc = bl.calculate_comparative_return(start_index, end_index)
 
@@ -41,8 +41,8 @@ class back_test():
     def plot_return(self, acc_ret_port_set, eq_acc):
         x = np.arange(0,len(acc_ret_port_set),1)
         type_name = VIEW_TYPE_NAME[VIEW_TYPE]
-        plt.plot(x, eq_acc[0:51], color='blue', label='Equal weight')
-        plt.plot(x, acc_ret_port_set, color='red', label='Arbitrary View')
+        plt.plot(x, eq_acc[0:52], color='blue', label='Equal weight')
+        plt.plot(x, acc_ret_port_set, color='red', label=str(type_name))
         plt.title('BL Return Back Test_'+str(type_name)+'_Year '+ BACK_TEST_PERIOD_NAME)
         plt.xlabel(BACK_TEST_X_LABEL)
         plt.ylabel(BACK_TEST_Y_LABEL)
