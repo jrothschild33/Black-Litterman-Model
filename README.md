@@ -1,26 +1,63 @@
 # Black-Litterman-Model
 
-#### Brief Introduction
-1. Implement Black-Litterman Model using **Python**.  
-2. Use **4 different** kinds of view type to evaluate Black-Litterman Model.
-3. Implement **back-test** by stock market.
-4  Plot line charts which display accumulated return using BL model vs that using eqaul weight (comparative approach) for these 4 types. 
-5. Data: price of 10 stocks in the US stock market during the past ten years.
+### 简介
+1. 使用 **Python** 复现Black-Litterman模型。  
+2. 使用四种不同观点类型来评估Black-Litterman模型。
+3. 自编 **back-test** 函数对2015年美股数据进行回测。
+4. 针对四种不同观点类型，画出BL模型下的资产组合累计收益率与等市值权重策略下的资产组合累计收益率的折线图对比。
+5. 数据：2009/10/2-2019/10/18 过去十年间10只美股价格（包含3大股指）、市值数据。
+6. 股票：AAPL.O、MSFT.O、AMZN.O、JPM.N、V.N、JNJ.N、WMT.N、BAC.N、BRK_B.N、XOM.N
+7. 股指：SPX.GI、DJI.GI、IXIC.GI
 
-*Data Source: Wind*
+*数据来源: Wind*
 
-#### Details
-1. 4 different kinds of view type:  
-  * **Market value as view**:    
-  It uses weights of 10 stocks' market value as weights of assets allocation.   
-  * **Arbitrary views**:    
-  It measures the result when views are given arbitrarily and inaccurately.   
-  * **Reasonable views**:  
-  It measures the result when views are given reasonably and accurately.  
-  * **Near period return as view**:  
-  It measures the result when stock price and return of nearest T periods are used as views.  
+### 数据格式
+* **Price_Data.xlsx**
 
-#### Results
+| Date       | SPX.GI    | DJI.GI     | IXIC.GI   | AAPL.O  | MSFT.O  | AMZN.O    | JPM.N   | V.N     | JNJ.N   | WMT.N   | BAC.N  | BRK_B.N | XOM.N  |
+| ---------- | --------- | ---------- | --------- | ------- | ------- | --------- | ------- | ------- | ------- | ------- | ------ | ------- | ------ |
+| 2009/10/02 | 1,025.21  | 9,487.67   | 2,048.11  | 23.05   | 19.78   | 89.85     | 32.87   | 15.64   | 44.15   | 38.27   | 14.75  | 65.29   | 48.49  |
+| 2009/10/09 | 1,071.49  | 9,864.94   | 2,139.28  | 23.75   | 20.24   | 95.71     | 36.01   | 16.83   | 45.63   | 38.97   | 15.80  | 65.74   | 50.45  |
+| 2009/10/16 | 1,087.68  | 9,995.91   | 2,156.80  | 23.44   | 21.00   | 95.32     | 36.17   | 17.14   | 44.69   | 39.94   | 15.59  | 66.12   | 53.25  |
+| 2009/10/23 | 1,079.60  | 9,972.18   | 2,154.47  | 25.43   | 22.20   | 118.49    | 35.52   | 17.11   | 44.75   | 39.33   | 14.65  | 66.36   | 53.58  |
+| 2009/10/30 | 1,036.19  | 9,712.73   | 2,045.11  | 23.50   | 21.97   | 118.81    | 32.80   | 17.48   | 43.65   | 38.74   | 13.17  | 65.66   | 52.20  |
+| 2009/11/06 | 1,069.30  | 10,023.42  | 2,112.44  | 24.23   | 22.60   | 126.20    | 34.14   | 18.39   | 44.57   | 39.97   | 13.59  | 68.50   | 52.86  |
+| …        | …       | …        | …       | …     | …     | …       | …     | …     | …     | …     | …    | …     | …    |
+| 2019/10/11 | 2,970.27  | 26,816.59  | 8,057.04  | 236.21  | 139.68  | 1,731.92  | 116.14  | 177.06  | 131.33  | 120.24  | 28.91  | 208.08  | 68.98  |
+| 2019/10/18 | 2,986.20  | 26,770.20  | 8,089.54  | 236.41  | 137.41  | 1,757.51  | 120.56  | 175.71  | 127.70  | 119.14  | 30.35  | 208.76  | 67.61  |
+
+525 * 13 columns
+
+
+* **Market_Value.xlsx**
+
+| Date       | AAPL.O            | MSFT.O            | … | WMT.N            | BAC.N            | BRK_B.N          | XOM.N            | TOTAL             |
+| ---------- | ----------------- | ----------------- | ----------------- | ---------------- | ---------------- | ---------------- | ---------------- | ----------------- |
+| 2009/09/30 | 166039636095.00   | 229182530573.00   | … | 189331617647.00  | 146384983779.00  | 49293588026.00   | 329725261574.00  | 1548810924838.00  |
+| 2009/10/09 | 170626217896.00   | 227667716024.00   | … | 192725625052.00  | 151402908755.00  | 48759561794.00   | 332897083067.00  | 1577513630963.00  |
+| 2009/10/16 | 168458341342.00   | 236132856151.00   | … | 197546658298.00  | 149326526006.00  | 49041408972.00   | 351399375110.00  | 1603614358784.00  |
+| 2009/10/23 | 182692869627.00   | 248792981012.00   | … | 194538333553.00  | 140328867429.00  | 49219417716.00   | 353561980673.00  | 1627800296541.00  |
+| 2009/10/30 | 169777892161.00   | 246218035812.00   | … | 191607145339.00  | 126140251980.00  | 48700225546.00   | 344430979405.00  | 1569356545747.00  |
+| 2009/11/06 | 175037854443.00   | 253232541701.00   | … | 197662363096.00  | 130193935532.00  | 50845344300.00   | 344557856462.00  | 1610976134573.00  |
+| …        | …               | …               | … | …              | …              | …              | …              | …               |
+| 2019/11/08 | 1136676052300.00  | 1096411943419.00  | … | 334544693490.00  | 286044415352.00  | 299207605218.00  | 294484998062.00  | 5446382609138.00  |
+| 2019/11/09 | 1136676052300.00  | 1096411943419.00  | … | 334544693490.00  | 286044415352.00  | 299207605218.00  | 294484998062.00  | 5446382609138.00  |
+525 * 10 columns
+
+#### 观点
+1. **Market value as view**:    
+   投资者无观点，使用当前市值权重（即均衡状态下的权重）作为作为投资组合的权重。 
+2. **Arbitrary views**:    
+   为投资者分配任意观点，这里随机分配了3个观点：
+   * 观点1-伯克希尔哈撒韦(BRK_B)比埃克森美孚(XOM)的预期收益高0.01%；
+   * 观点2-微软(MSFT)比摩根大通(JPM)的预期收益高0.025%；
+   * 观点3-10%摩根(JPM)+90%VISA(V)的投资组合比10%沃尔玛(WMT)+90%美国银行(BAC)的投资组合预期收益高0.01%。
+3. **Reasonable views**:  
+   分析研报之后给出的合理性观点，可以参考券商的一致性预期，这里的观点是亚马逊(AMZN)比摩根大通(JPM)的预期收益率高1.7%
+4. **Near period return as view**:  
+   选用最近`VIEW_T`期的历史平均收益率作为预期收益率。
+
+#### 回测结果
 1. These 4 kinds of view type show results as follows:  
   * **Market value as views**:    
     * Nearly equal performance as Equal Weight method (comparative approach).
@@ -35,4 +72,3 @@
   * **Near period return as views**:  
     * Views which generated from nearest data can response efficiently and quickly to huge change within a short time. 
     * It performs well when the whole market goes down (e.g. Two large drops in year 2015).
-

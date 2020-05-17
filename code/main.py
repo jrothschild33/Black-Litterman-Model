@@ -5,9 +5,9 @@ import imageio
 import matplotlib
 import matplotlib.pyplot as plt
 import time
-from structs import *
-from black_litterman import black_litterman
-from back_test import back_test
+from structures import *
+from black_litterman import BlackLitterman
+from back_test import BackTest
 
 
 if __name__ == "__main__":
@@ -15,14 +15,10 @@ if __name__ == "__main__":
     print("-" * 30, 'Initial Black Litterman Model', "-" * 30)
     type_name = VIEW_TYPE_NAME[VIEW_TYPE]
     print('Use view type: ', type_name)
-    bl = black_litterman()
+    bl = BlackLitterman()
     bl.get_cc_return()
     bl.get_market_value_weight()
 
     print("-" * 30, 'Do Back Test', "-" * 30)
-    bt = back_test()
+    bt = BackTest()
     bt.back_test(bl)
-
-
-
-

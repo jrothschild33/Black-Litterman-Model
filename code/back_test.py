@@ -5,9 +5,9 @@ import imageio
 import matplotlib
 import matplotlib.pyplot as plt
 import time
-from structs import *
+from structures import *
 
-class back_test():
+class BackTest:
     def __init__(self):
         self.start_index = START_INDEX
         self.end_index = END_INDEX
@@ -47,4 +47,4 @@ class back_test():
         plt.xlabel(BACK_TEST_X_LABEL)
         plt.ylabel(BACK_TEST_Y_LABEL)
         plt.legend()
-        plt.savefig("plot/" + 'BL Return Back Test_'+str(type_name)+'_Year '+ BACK_TEST_PERIOD_NAME + ".png")
+        plt.savefig("./Plot/" + 'BL Return Back Test_'+str(type_name)+'_Year '+ BACK_TEST_PERIOD_NAME + ".png")
